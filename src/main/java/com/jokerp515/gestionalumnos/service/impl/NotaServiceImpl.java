@@ -1,5 +1,6 @@
 package com.jokerp515.gestionalumnos.service.impl;
 
+import com.jokerp515.gestionalumnos.exception.ResourceNotFoundException;
 import com.jokerp515.gestionalumnos.model.Alumno;
 import com.jokerp515.gestionalumnos.model.Materia;
 import com.jokerp515.gestionalumnos.model.Nota;
@@ -24,10 +25,10 @@ public class NotaServiceImpl implements NotaService {
     public Nota registrarNota(Long alumnoId, Long materiaId, Double valor) {
 
         Alumno alumno = alumnoRepository.findById(alumnoId)
-                .orElseThrow(() -> new IllegalArgumentException("Alumno no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
 
         Materia materia = materiaRepository.findById(materiaId)
-                .orElseThrow(() -> new IllegalArgumentException("Materia no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Materia no encontrada"));
 
         Nota nota = new Nota();
         nota.setAlumno(alumno);

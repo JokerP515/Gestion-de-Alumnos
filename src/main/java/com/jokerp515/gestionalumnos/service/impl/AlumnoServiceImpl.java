@@ -1,5 +1,6 @@
 package com.jokerp515.gestionalumnos.service.impl;
 
+import com.jokerp515.gestionalumnos.exception.ResourceNotFoundException;
 import com.jokerp515.gestionalumnos.model.Alumno;
 import com.jokerp515.gestionalumnos.repository.AlumnoRepository;
 import com.jokerp515.gestionalumnos.service.AlumnoService;
@@ -30,7 +31,7 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Override
     public Alumno obtenerPorId(Long id) {
         return alumnoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Alumno no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.jokerp515.gestionalumnos.service.impl;
 
+import com.jokerp515.gestionalumnos.exception.ResourceNotFoundException;
 import com.jokerp515.gestionalumnos.model.Materia;
 import com.jokerp515.gestionalumnos.repository.MateriaRepository;
 import com.jokerp515.gestionalumnos.service.MateriaService;
@@ -30,7 +31,7 @@ public class MateriaServiceImpl implements MateriaService {
     @Override
     public Materia obtenerPorId(Long id) {
         return materiaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Materia no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Materia no encontrada"));
     }
 
     @Override
