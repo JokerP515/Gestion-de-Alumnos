@@ -1,18 +1,20 @@
 package com.jokerp515.gestionalumnos.service;
 
-import com.jokerp515.gestionalumnos.model.Alumno;
+import com.jokerp515.gestionalumnos.dto.DatosActualizarAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaAlumno;
 
 import java.util.List;
 
 public interface AlumnoService {
 
-    Alumno crearAlumno(Alumno alumno);
+    DatosRespuestaAlumno crearAlumno(DatosRegistroAlumno datos);
 
-    List<Alumno> listarAlumnos();
+    List<DatosRespuestaAlumno> listarAlumnos();
 
-    Alumno obtenerPorId(Long id);
+    DatosRespuestaAlumno obtenerPorId(Long id);
 
-    Alumno actualizarAlumno(Long id, Alumno alumno);
+    DatosRespuestaAlumno actualizarAlumno(Long id, DatosActualizarAlumno datos);
 
     void eliminarAlumno(Long id);
 

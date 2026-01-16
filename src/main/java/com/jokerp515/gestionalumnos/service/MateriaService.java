@@ -1,18 +1,20 @@
 package com.jokerp515.gestionalumnos.service;
 
-import com.jokerp515.gestionalumnos.model.Materia;
+import com.jokerp515.gestionalumnos.dto.DatosActualizarMateria;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroMateria;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaMateria;
 
 import java.util.List;
 
 public interface MateriaService {
 
-    Materia crearMateria(Materia materia);
+    DatosRespuestaMateria crearMateria(DatosRegistroMateria datos);
 
-    List<Materia> listarMaterias();
+    List<DatosRespuestaMateria> listarMaterias();
 
-    Materia obtenerPorId(Long id);
+    DatosRespuestaMateria obtenerPorId(Long id);
 
-    Materia actualizarMateria(Long id, Materia materia);
+    DatosRespuestaMateria actualizarMateria(Long id, DatosActualizarMateria datos);
 
     void eliminarMateria(Long id);
 }

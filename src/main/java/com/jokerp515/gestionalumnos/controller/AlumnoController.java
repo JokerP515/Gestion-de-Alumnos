@@ -1,6 +1,8 @@
 package com.jokerp515.gestionalumnos.controller;
 
-import com.jokerp515.gestionalumnos.model.Alumno;
+import com.jokerp515.gestionalumnos.dto.DatosActualizarAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaAlumno;
 import com.jokerp515.gestionalumnos.service.AlumnoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,27 +28,27 @@ public class AlumnoController {
     private final AlumnoService alumnoService;
 
     @PostMapping
-    public ResponseEntity<Alumno> crearAlumno(@Valid @RequestBody Alumno alumno) {
-        Alumno creado = alumnoService.crearAlumno(alumno);
+    public ResponseEntity<DatosRespuestaAlumno> crearAlumno(@Valid @RequestBody DatosRegistroAlumno datos) {
+        DatosRespuestaAlumno creado = alumnoService.crearAlumno(datos);
         return new ResponseEntity<>(creado, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Alumno>> listarAlumnos() {
+    public ResponseEntity<List<DatosRespuestaAlumno>> listarAlumnos() {
         return ResponseEntity.ok(alumnoService.listarAlumnos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Alumno> obtenerAlumno(@PathVariable Long id) {
+    public ResponseEntity<DatosRespuestaAlumno> obtenerAlumno(@PathVariable Long id) {
         return ResponseEntity.ok(alumnoService.obtenerPorId(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Alumno> actualizarAlumno(
+    public ResponseEntity<DatosRespuestaAlumno> actualizarAlumno(
             @PathVariable Long id,
-            @Valid @RequestBody Alumno alumno
+            @Valid @RequestBody DatosActualizarAlumno datos
     ) {
-        return ResponseEntity.ok(alumnoService.actualizarAlumno(id, alumno));
+        return ResponseEntity.ok(alumnoService.actualizarAlumno(id, datos));
     }
 
     @DeleteMapping("/{id}")

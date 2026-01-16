@@ -1,6 +1,8 @@
 package com.jokerp515.gestionalumnos.controller;
 
-import com.jokerp515.gestionalumnos.model.Materia;
+import com.jokerp515.gestionalumnos.dto.DatosActualizarMateria;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroMateria;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaMateria;
 import com.jokerp515.gestionalumnos.service.MateriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,27 +28,27 @@ public class MateriaController {
     private final MateriaService materiaService;
 
     @PostMapping
-    public ResponseEntity<Materia> crearMateria(@Valid @RequestBody Materia materia) {
-        Materia creada = materiaService.crearMateria(materia);
+    public ResponseEntity<DatosRespuestaMateria> crearMateria(@Valid @RequestBody DatosRegistroMateria datos) {
+        DatosRespuestaMateria creada = materiaService.crearMateria(datos);
         return new ResponseEntity<>(creada, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Materia>> listarMaterias() {
+    public ResponseEntity<List<DatosRespuestaMateria>> listarMaterias() {
         return ResponseEntity.ok(materiaService.listarMaterias());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Materia> obtenerMateria(@PathVariable Long id) {
+    public ResponseEntity<DatosRespuestaMateria> obtenerMateria(@PathVariable Long id) {
         return ResponseEntity.ok(materiaService.obtenerPorId(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Materia> actualizarMateria(
+    public ResponseEntity<DatosRespuestaMateria> actualizarMateria(
             @PathVariable Long id,
-            @Valid @RequestBody Materia materia
+            @Valid @RequestBody DatosActualizarMateria datos
     ) {
-        return ResponseEntity.ok(materiaService.actualizarMateria(id, materia));
+        return ResponseEntity.ok(materiaService.actualizarMateria(id, datos));
     }
 
     @DeleteMapping("/{id}")

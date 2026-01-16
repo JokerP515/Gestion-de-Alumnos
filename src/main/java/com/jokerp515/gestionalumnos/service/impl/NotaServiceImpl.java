@@ -1,5 +1,7 @@
 package com.jokerp515.gestionalumnos.service.impl;
 
+import com.jokerp515.gestionalumnos.dto.DatosRegistroNota;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaNota;
 import com.jokerp515.gestionalumnos.exception.ResourceNotFoundException;
 import com.jokerp515.gestionalumnos.model.Alumno;
 import com.jokerp515.gestionalumnos.model.Materia;
@@ -22,29 +24,36 @@ public class NotaServiceImpl implements NotaService {
     private final MateriaRepository materiaRepository;
 
     @Override
-    public Nota registrarNota(Long alumnoId, Long materiaId, Double valor) {
+    public DatosRespuestaNota registrarNota(DatosRegistroNota datos) {
 
-        Alumno alumno = alumnoRepository.findById(alumnoId)
+        Alumno alumno = alumnoRepository.findById(datos.alumnoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
 
-        Materia materia = materiaRepository.findById(materiaId)
+        Materia materia = materiaRepository.findById(datos.materiaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Materia no encontrada"));
 
         Nota nota = new Nota();
         nota.setAlumno(alumno);
         nota.setMateria(materia);
-        nota.setValor(valor);
+        nota.setValor(datos.valor());
 
-        return notaRepository.save(nota);
+        Nota guardada = notaRepository.save(nota);
+        return new DatosRespuestaNota(guardada);
     }
 
     @Override
-    public List<Nota> listarNotasPorAlumno(Long alumnoId) {
-        return notaRepository.findByAlumnoId(alumnoId);
+    public List<DatosRespuestaNota> listarNotasPorAlumno(Long alumnoId) {
+        return notaRepository.findByAlumnoId(alumnoId)
+                .stream()
+                .map(DatosRespuestaNota::new)
+                .toList();
     }
 
     @Override
-    public List<Nota> listarNotasPorAlumnoYMateria(Long alumnoId, Long materiaId) {
-        return notaRepository.findByAlumnoIdAndMateriaId(alumnoId, materiaId);
+    public List<DatosRespuestaNota> listarNotasPorAlumnoYMateria(Long alumnoId, Long materiaId) {
+        return notaRepository.findByAlumnoIdAndMateriaId(alumnoId, materiaId)
+                .stream()
+                .map(DatosRespuestaNota::new)
+                .toList();
     }
 }

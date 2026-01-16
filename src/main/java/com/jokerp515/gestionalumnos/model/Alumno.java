@@ -1,5 +1,7 @@
 package com.jokerp515.gestionalumnos.model;
 
+import com.jokerp515.gestionalumnos.dto.DatosActualizarAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroAlumno;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,4 +53,18 @@ public class Alumno {
 
     @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas;
+
+    public Alumno(DatosRegistroAlumno datos) {
+        this.nombre = datos.nombre();
+        this.apellido = datos.apellido();
+        this.email = datos.email();
+        this.fechaNacimiento = datos.fechaNacimiento();
+    }
+
+    public void actualizarAlumno(DatosActualizarAlumno datos) {
+        this.nombre = (datos.nombre() == null) ? this.nombre : datos.nombre();
+        this.apellido = (datos.apellido() == null) ? this.apellido : datos.apellido();
+        this.email = (datos.email() == null) ? this.email : datos.email();
+        this.fechaNacimiento = (datos.fechaNacimiento() == null) ? this.fechaNacimiento : datos.fechaNacimiento();
+    }
 }

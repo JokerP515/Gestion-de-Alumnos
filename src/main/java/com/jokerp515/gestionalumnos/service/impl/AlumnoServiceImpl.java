@@ -1,5 +1,8 @@
 package com.jokerp515.gestionalumnos.service.impl;
 
+import com.jokerp515.gestionalumnos.dto.DatosActualizarAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroAlumno;
+import com.jokerp515.gestionalumnos.dto.DatosRespuestaAlumno;
 import com.jokerp515.gestionalumnos.exception.ResourceNotFoundException;
 import com.jokerp515.gestionalumnos.model.Alumno;
 import com.jokerp515.gestionalumnos.repository.AlumnoRepository;
@@ -16,39 +19,46 @@ public class AlumnoServiceImpl implements AlumnoService {
     private final AlumnoRepository alumnoRepository;
 
     @Override
-    public Alumno crearAlumno(Alumno alumno) {
-        if (alumnoRepository.existsByEmail(alumno.getEmail())) {
+    public DatosRespuestaAlumno crearAlumno(DatosRegistroAlumno datos) {
+        if (alumnoRepository.existsByEmail(datos.email())) {
             throw new IllegalArgumentException("El email ya está registrado");
         }
-        return alumnoRepository.save(alumno);
+        Alumno alumno = new Alumno(datos);
+        Alumno guardado = alumnoRepository.save(alumno);
+        return new DatosRespuestaAlumno(guardado);
     }
 
     @Override
-    public List<Alumno> listarAlumnos() {
-        return alumnoRepository.findAll();
+    public List<DatosRespuestaAlumno> listarAlumnos() {
+        return alumnoRepository.findAll()
+                .stream()
+                .map(DatosRespuestaAlumno::new)
+                .toList();
     }
 
     @Override
-    public Alumno obtenerPorId(Long id) {
+    public DatosRespuestaAlumno obtenerPorId(Long id) {
+        Alumno alumno = alumnoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
+        return new DatosRespuestaAlumno(alumno);
+    }
+
+    private Alumno buscarAlumnoPorId(Long id) {
         return alumnoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado"));
     }
 
     @Override
-    public Alumno actualizarAlumno(Long id, Alumno alumno) {
-        Alumno existente = obtenerPorId(id);
-
-        existente.setNombre(alumno.getNombre());
-        existente.setApellido(alumno.getApellido());
-        existente.setEmail(alumno.getEmail());
-        existente.setFechaNacimiento(alumno.getFechaNacimiento());
-
-        return alumnoRepository.save(existente);
+    public DatosRespuestaAlumno actualizarAlumno(Long id, DatosActualizarAlumno datos) {
+        Alumno existente = buscarAlumnoPorId(id);
+        existente.actualizarAlumno(datos);
+        Alumno actualizado = alumnoRepository.save(existente);
+        return new DatosRespuestaAlumno(actualizado);
     }
 
     @Override
     public void eliminarAlumno(Long id) {
-        Alumno alumno = obtenerPorId(id);
+        Alumno alumno = buscarAlumnoPorId(id);
         alumnoRepository.delete(alumno);
     }
 

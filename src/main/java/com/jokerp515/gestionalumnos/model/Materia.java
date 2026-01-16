@@ -1,5 +1,7 @@
 package com.jokerp515.gestionalumnos.model;
 
+import com.jokerp515.gestionalumnos.dto.DatosActualizarMateria;
+import com.jokerp515.gestionalumnos.dto.DatosRegistroMateria;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,5 +47,17 @@ public class Materia {
 
     @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas;
+
+    public Materia(DatosRegistroMateria datos) {
+        this.nombre = datos.nombre();
+        this.codigo = datos.codigo();
+        this.creditos = datos.creditos();
+    }
+
+    public void actualizarMateria(DatosActualizarMateria datos) {
+        this.nombre = (datos.nombre() == null) ? this.nombre : datos.nombre();
+        this.codigo = (datos.codigo() == null) ? this.codigo : datos.codigo();
+        this.creditos = (datos.creditos() == null) ? this.creditos : datos.creditos();
+    }
 
 }
