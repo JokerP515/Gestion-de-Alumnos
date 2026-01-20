@@ -294,12 +294,19 @@ El proyecto incluye un dump de la base de datos con datos de prueba en `db/gesti
 docker compose up -d
 ```
 
-2. A continuación, se restaura el dump en la base de datos con el siguiente comando:
+2. A continuación, se restaura el dump en la base de datos con uno de los siguientes comandos:
+
+**Opción 1: Usando pg_restore (formato custom)**
 ```bash
-docker exec -i gestion-alumnos-db pg_restore -U postgres -d gestion_alumnos -c < db/gestion_alumnos.dump
+docker exec -i gestion-alumnos-db pg_restore -U postgres -d gestion_alumnos -c -v < db/gestion_alumnos.dump
 ```
 
-> **Nota:** La opción `-c` elimina los objetos existentes antes de restaurar, asegurando una restauración limpia.
+**Opción 2: Si la Opción 1 falla, regenerar el dump en formato SQL**
+```bash
+docker exec -i gestion-alumnos-db psql -U postgres -d gestion_alumnos < db/gestion_alumnos.sql
+```
+
+> **Nota:** La opción `-c` limpia (elimina) los objetos existentes antes de restaurar. La opción `-v` muestra información detallada del proceso.
 
 **Verificar la restauración:**
 - Inicia la aplicación y consulta: `http://localhost:8080/api/alumnos`
